@@ -1,0 +1,87 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "btowntickets"
+dynamic = ["version"]
+description = "Analysis of parking tickets in Brampton"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "ImAKappa", email = "imaninconsp1cuouskappa@gmail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+  "numpy>=1.26.4",
+  "pandas>=2.2.1",
+  "matplotlib>=3.8.3",
+  "seaborn>=0.13.2",
+  "ipykernel>=6.29.3",
+  "pyarrow>=15.0.1",
+  "nbdime>=4.0.1"
+]
+
+[project.urls]
+Documentation = "https://github.com/unknown/btowntickets#readme"
+Issues = "https://github.com/unknown/btowntickets/issues"
+Source = "https://github.com/unknown/btowntickets"
+
+[tool.hatch.version]
+path = "btowntickets/__about__.py"
+
+[tool.hatch.envs.default]
+dependencies = [
+  "coverage[toml]>=6.5",
+  "pytest",
+]
+[tool.hatch.envs.default.scripts]
+test = "pytest {args:tests}"
+test-cov = "coverage run -m pytest {args:tests}"
+cov-report = [
+  "- coverage combine",
+  "coverage report",
+]
+cov = [
+  "test-cov",
+  "cov-report",
+]
+
+[[tool.hatch.envs.all.matrix]]
+python = ["3.10", "3.11", "3.12"]
+
+[tool.hatch.envs.types]
+dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:btowntickets tests}"
+
+[tool.coverage.run]
+source_pkgs = ["btowntickets", "tests"]
+branch = true
+parallel = true
+omit = [
+  "btowntickets/__about__.py",
+]
+
+[tool.coverage.paths]
+btowntickets = ["btowntickets", "*/btowntickets/btowntickets"]
+tests = ["tests", "*/btowntickets/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
